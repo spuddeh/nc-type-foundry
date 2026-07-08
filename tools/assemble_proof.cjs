@@ -253,7 +253,7 @@ console.log('wrote', OUT, html.length, 'bytes', EXTRA_OUT ? `(+ ${EXTRA_OUT})` :
 // ---- GitHub Pages variant: live type tester + downloads + the proof below ----
 const DOCS_DIR = path.join(__dirname, '..', 'docs');
 fs.mkdirSync(DOCS_DIR, { recursive: true });
-for (const f of ['NightCorpDisplay-Regular.woff2', 'NightCorpDisplay-Regular.otf']) {
+for (const f of ['NightCorpDisplay-Regular.woff2', 'NightCorpDisplay-Regular.otf', 'nightcorp_logo_v3.svg', 'nightcorp_monogram.svg']) {
   const src = path.join(DIST_DIR, f);
   if (fs.existsSync(src)) fs.copyFileSync(src, path.join(DOCS_DIR, f));
   else console.warn('pages: missing', f, '- run build_font.cjs first');
@@ -281,6 +281,8 @@ const tester = `
   <div class="dl">
     <a href="NightCorpDisplay-Regular.woff2" download>Download WOFF2</a>
     <a href="NightCorpDisplay-Regular.otf" download>Download OTF</a>
+    <a href="nightcorp_logo_v3.svg" download>Logo SVG</a>
+    <a href="nightcorp_monogram.svg" download>Monogram SVG</a>
     <a href="https://github.com/spuddeh/nc-type-foundry">Repository</a>
   </div>
 `;
