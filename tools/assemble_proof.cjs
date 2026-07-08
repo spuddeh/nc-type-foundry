@@ -265,6 +265,9 @@ const pagesCss = `
   .tester:focus { border-style: solid; }
   .dl { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0 4px; }
   .dl a { color: var(--cyan); border: 1px solid color-mix(in srgb, var(--cyan) 40%, transparent); border-radius: 6px; padding: 8px 14px; text-decoration: none; font-size: 13px; letter-spacing: 0.08em; }
+  .live-specs { background: var(--panel-2); border: 1px solid var(--line); border-radius: 6px; padding: 26px 22px 10px; overflow-x: auto; }
+  .live-specs p { font-family: 'Night Corp Display'; margin: 0 0 22px; white-space: nowrap; }
+  .c-cyan { color: var(--cyan); } .c-gold { color: var(--gold); } .c-gray { color: var(--muted); }
   .foot { color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); margin-top: 48px; padding-top: 18px; max-width: 82ch; }
   .foot a { color: var(--cyan); }
 `;
@@ -289,6 +292,21 @@ const footer = `
 `;
 let pages = html.replace('</style>', pagesCss + '</style>');
 pages = pages.replace('<h1>NC Font Glyphs: Proof Sheet</h1>', tester + '<h1>NC Font Glyphs: Proof Sheet</h1>');
+const liveSpecs = `<p class="eyebrow">Specimens</p>
+  <h2>Letters, digits and marks, set live in the font</h2>
+  <div class="live-specs">
+    <p style="font-size:64px">NC ZONING BOARD</p>
+    <p style="font-size:44px" class="c-cyan">NIGHT CITY ACADEMY 2077</p>
+    <p style="font-size:36px">SYNTHWAVE // OUTRUN • NC RADIO • 101.9</p>
+    <p style="font-size:36px" class="c-gold">€$ 12,500 | 360° ÷ 8 = 45°</p>
+    <p style="font-size:30px">&gt;_ ACCESS TERMINAL { GRANTED } ~ OK</p>
+    <p style="font-size:30px">ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789</p>
+    <p style="font-size:26px">. , : ; - ! ? ' " / \ ( ) [ ] { } + = × ÷ * | ° % _ &lt; &gt; # @ &amp; © ® ℗ ™</p>
+    <p style="font-size:26px" class="c-gray">THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG</p>
+  </div>
+
+  `;
+pages = pages.replace(/<p class="eyebrow">Specimens<\/p>[\s\S]*?(?=<p class="eyebrow">Notes<\/p>)/, liveSpecs);
 pages = pages.replace(/<\/div>\s*$/, footer + '</div>');
 pages = '<title>Night Corp Display</title>' + pages.replace('<title>NC Font Glyphs: Proof Sheet</title>', '');
 fs.writeFileSync(path.join(DOCS_DIR, 'index.html'), pages);
