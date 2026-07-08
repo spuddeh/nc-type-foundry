@@ -99,6 +99,15 @@ const font = new opentype.Font({
   descender: -130,      // comma tail bottoms at -84
   glyphs,
 });
+const META_NAMES = {
+  copyright: { en: 'Copyright 2026 Adam Murphy. Unofficial Cyberpunk fan content per CD PROJEKT RED fan content guidelines; not affiliated with CD PROJEKT RED.' },
+  license: { en: 'SIL Open Font License 1.1, Reserved Font Name "Night Corp Display"' },
+  licenseURL: { en: 'https://openfontlicense.org' },
+  designer: { en: 'Adam Murphy (spuddeh)' },
+};
+for (const plat of ['unicode', 'macintosh', 'windows']) {
+  if (font.names[plat]) Object.assign(font.names[plat], META_NAMES);
+}
 const otf = Buffer.from(font.toArrayBuffer());
 const otfPath = path.join(DIST, 'NightCorpDisplay-Regular.otf');
 fs.writeFileSync(otfPath, otf);

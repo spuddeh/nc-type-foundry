@@ -4,7 +4,7 @@ Custom display typefaces for the Night Corp universe ([nczoning.net](https://ncz
 
 Consumers only need `dist/`: the compiled font files, the test page, and the pure-geometry logo assets. Everything else is the foundry.
 
-**Proof sheet:** open `proof.html` for the full family, trace-overlay verification, and typeset specimens. **Try the font:** open `dist/font-test.html`.
+**Live site:** [spuddeh.github.io/nc-type-foundry](https://spuddeh.github.io/nc-type-foundry/) renders the compiled font with an editable type tester, downloads, and the full proof sheet (generated into `docs/`). Locally: `proof.html` and `dist/font-test.html`.
 
 ## Package
 
@@ -20,6 +20,7 @@ Consumers only need `dist/`: the compiled font files, the test page, and the pur
 | `dist/NightCorpDisplay-Regular.otf` / `.woff2` | The font, 79 glyphs; lowercase codepoints map to the capitals | generated |
 | `dist/nightcorp_logo_v3.svg`, `dist/nightcorp_monogram.svg` | Pure-geometry logo (1546×1000) and monogram favicon source (1546×835) | generated |
 | `proof.html` | The living proof sheet | generated |
+| `docs/` | The GitHub Pages site (tester + proof) with font copies | generated |
 
 The favicon Z canonical reference lives in the map repo (`nc-zoning-board/assets/img/favicon/favicon-map-cyan.svg`).
 
@@ -28,10 +29,16 @@ Rebuild everything:
 ```bash
 cd tools
 npm install          # once: opentype.js, wawoff2, polygon-clipping
-node generate_glyphs.cjs && node assemble_proof.cjs && node build_font.cjs
+node generate_glyphs.cjs && node build_font.cjs && node assemble_proof.cjs
 ```
 
-Generated outputs are committed on purpose (they are the consumables); regenerate before committing any geometry change. Licence: not yet chosen.
+Generated outputs are committed on purpose (they are the consumables); regenerate before committing any geometry change (`assemble_proof` also rebuilds the Pages site in `docs/`).
+
+## Licence and fan content
+
+The **typefaces** (compiled fonts, glyph SVGs, geometry tables) are under the **SIL Open Font License 1.1**, Reserved Font Name "Night Corp Display" (`OFL.txt`); the **tooling** is **MIT** (`LICENSE-MIT.txt`). See `LICENSE.md`.
+
+This project is unofficial **fan content** made under CD PROJEKT RED's [Fan Content Guidelines](https://www.cdprojektred.com/en/fan-content); it is not affiliated with, endorsed by, or sponsored by CD PROJEKT RED. Cyberpunk, Cyberpunk 2077 and related marks (including in-universe names such as Night Corp) are trademarks of CD PROJEKT S.A. Downstream Cyberpunk-related use must also comply with those guidelines.
 
 ## Canonical sources and provenance
 

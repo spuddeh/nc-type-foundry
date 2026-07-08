@@ -249,3 +249,47 @@ ${cardRow(PUNCT, n => PUNCT_LABEL[n])}
 fs.writeFileSync(OUT, html);
 if (EXTRA_OUT) fs.writeFileSync(EXTRA_OUT, html);
 console.log('wrote', OUT, html.length, 'bytes', EXTRA_OUT ? `(+ ${EXTRA_OUT})` : '');
+
+// ---- GitHub Pages variant: live type tester + downloads + the proof below ----
+const DOCS_DIR = path.join(__dirname, '..', 'docs');
+fs.mkdirSync(DOCS_DIR, { recursive: true });
+for (const f of ['NightCorpDisplay-Regular.woff2', 'NightCorpDisplay-Regular.otf']) {
+  const src = path.join(DIST_DIR, f);
+  if (fs.existsSync(src)) fs.copyFileSync(src, path.join(DOCS_DIR, f));
+  else console.warn('pages: missing', f, '- run build_font.cjs first');
+}
+const pagesCss = `
+  @font-face { font-family: 'Night Corp Display'; src: url('NightCorpDisplay-Regular.woff2') format('woff2'), url('NightCorpDisplay-Regular.otf') format('opentype'); }
+  .live-title { font-family: 'Night Corp Display'; font-size: clamp(34px, 6vw, 72px); margin: 0 0 4px; color: var(--ink); font-weight: 400; }
+  .tester { font-family: 'Night Corp Display'; background: var(--panel-2); border: 1px dashed color-mix(in srgb, var(--cyan) 45%, transparent); border-radius: 6px; padding: 20px; margin: 0 0 12px; outline: none; overflow-x: auto; white-space: nowrap; }
+  .tester:focus { border-style: solid; }
+  .dl { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0 4px; }
+  .dl a { color: var(--cyan); border: 1px solid color-mix(in srgb, var(--cyan) 40%, transparent); border-radius: 6px; padding: 8px 14px; text-decoration: none; font-size: 13px; letter-spacing: 0.08em; }
+  .foot { color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); margin-top: 48px; padding-top: 18px; max-width: 82ch; }
+  .foot a { color: var(--cyan); }
+`;
+const tester = `
+  <p class="live-title">NIGHT CORP DISPLAY</p>
+  <p class="sub">The compiled font, live on this page. Edit the samples below; download and licence links at the foot. Full proof sheet follows.</p>
+  <p class="eyebrow">Live font</p>
+  <h2>Type with it</h2>
+  <div class="tester" contenteditable="true" spellcheck="false" style="font-size:56px">NIGHT CITY LEGEND 2077</div>
+  <div class="tester" contenteditable="true" spellcheck="false" style="font-size:30px">360° ÷ 8 = 45° | €$ 12,500 &gt;_ ~ OK</div>
+  <div class="dl">
+    <a href="NightCorpDisplay-Regular.woff2" download>Download WOFF2</a>
+    <a href="NightCorpDisplay-Regular.otf" download>Download OTF</a>
+    <a href="https://github.com/spuddeh/nc-type-foundry">Repository</a>
+  </div>
+`;
+const footer = `
+  <div class="foot">
+    <p><strong>Licence:</strong> the typeface is released under the SIL Open Font License 1.1 (Reserved Font Name "Night Corp Display"); the tooling is MIT. See the repository's LICENSE.md.</p>
+    <p><strong>Fan content:</strong> unofficial fan content made under CD PROJEKT RED's <a href="https://www.cdprojektred.com/en/fan-content">Fan Content Guidelines</a>; not affiliated with, endorsed by, or sponsored by CD PROJEKT RED. Cyberpunk, Cyberpunk 2077 and related marks are trademarks of CD PROJEKT S.A.</p>
+  </div>
+`;
+let pages = html.replace('</style>', pagesCss + '</style>');
+pages = pages.replace('<h1>NC Font Glyphs: Proof Sheet</h1>', tester + '<h1>NC Font Glyphs: Proof Sheet</h1>');
+pages = pages.replace(/<\/div>\s*$/, footer + '</div>');
+pages = '<title>Night Corp Display</title>' + pages.replace('<title>NC Font Glyphs: Proof Sheet</title>', '');
+fs.writeFileSync(path.join(DOCS_DIR, 'index.html'), pages);
+console.log('wrote docs/index.html', pages.length, 'bytes');
